@@ -44,9 +44,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Red Light Example</a>
+          <a class="brand" href="/">Red Light Example</a>
           <div class="container nav-collapse">
-            <ul class="nav">
+            <ul class="nav pull-right">
+              <% if current_user %>
+                <li><%= link_to current_user.email, "javascript:void(0);" %></li>
+                <li><%= link_to "Logout", destroy_user_session_path, :method => :delete %></li>
+              <% else %>
+                <li><%= link_to "Sign up", new_user_registration_path %></li>
+              <% end %>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -62,20 +68,13 @@
       </footer>
     </div> <!-- /container -->
 
-    <div id="sign_in_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sign_in_modal_label" aria-hidden="true">
+    <div id="fancy_login" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="fancy_login_label" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="sign_in_modal_label">Sign in</h3>
+
+        <h3 id="fancy_login_label">Login</h3>
       </div>
       <div class="modal-body">
-        <%= form_for("user", :url => user_session_path) do |f| %>
-          <p>
-            <%= f.text_field :email, :placeholder => "email" %>
-            <%= f.password_field :password, :placeholder => "password" %>
-          </p>
-
-          <%= f.submit 'Sign in', :disable_with => "Submitting ...", :class => "btn" %>
-        <% end %>
       </div>
     </div>
 
@@ -84,5 +83,18 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag "application" %>
 
+    <script type="text/javascript">
+      function session_timeout(timeout) {
+        window.session_timeouted = timeout;
+      }
+
+      <% if user_signed_in? %>
+        var timeout_in = <%= Devise.timeout_in.to_f * 1000 %>;
+        session_timeout(false);
+        setTimeout('session_timeout(true)', timeout_in);
+      <% else %>
+        session_timeout(true);
+      <% end %>
+    </script>
   </body>
 </html>
