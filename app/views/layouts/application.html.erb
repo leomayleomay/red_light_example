@@ -84,16 +84,13 @@
     <%= javascript_include_tag "application" %>
 
     <script type="text/javascript">
-      function session_timeout(timeout) {
-        window.session_timeouted = timeout;
-      }
-
       <% if user_signed_in? %>
+        window.session_timed_out = false;
+
         var timeout_in = <%= Devise.timeout_in.to_f * 1000 %>;
-        session_timeout(false);
-        setTimeout('session_timeout(true)', timeout_in);
+        setTimeout('window.session_timed_out=true', timeout_in);
       <% else %>
-        session_timeout(true);
+        window.session_timed_out = true;
       <% end %>
     </script>
   </body>
