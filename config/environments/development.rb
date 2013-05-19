@@ -36,4 +36,8 @@ RedLightExample::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { :host => 'localhost:7777' }
+
+  Devise.setup do |config|
+    config.timeout_in = 1.minutes
+  end
 end
