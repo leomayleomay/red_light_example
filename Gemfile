@@ -26,6 +26,8 @@ gem "twitter-bootstrap-rails", "~> 2.2.6"
 
 gem 'devise'
 
+gem 'red_light'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
